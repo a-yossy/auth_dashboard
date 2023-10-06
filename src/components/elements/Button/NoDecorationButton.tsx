@@ -4,11 +4,15 @@ import { OmitStrict } from 'src/types/omitStrict';
 
 type OutlineButtonProps = OmitStrict<ButtonProps, 'variant'>;
 
-export const OutlineButton: FC<OutlineButtonProps> = ({
+export const NoDecorationButton: FC<OutlineButtonProps> = ({
   children,
   ...props
 }) => (
-  <Button variant='outline' {...props}>
+  <Button
+    variant='link'
+    {...props}
+    style={{ textDecoration: 'none', fontWeight: 'normal' }}
+  >
     {children}
   </Button>
 );

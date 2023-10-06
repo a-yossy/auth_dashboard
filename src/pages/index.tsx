@@ -4,12 +4,7 @@ import { OutlineButton } from 'src/components/elements';
 import { auth } from 'src/libs/firebase';
 
 const TopPage: NextPage = () => {
-  return (
-    <div>
-      TopPage
-      <OutlineButton onClick={() => signOut(auth)}>ログアウト</OutlineButton>
-    </div>
-  );
+  return <div>TopPage</div>;
 };
 
 export default TopPage;
