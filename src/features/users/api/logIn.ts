@@ -13,16 +13,10 @@ export const useLogIn = () => {
   const logIn = useCallback(
     async (params: LogInForm) => {
       try {
-        const response = await signInWithEmailAndPassword(
-          auth,
-          params.email,
-          params.password,
-        );
-        console.log(response);
+        await signInWithEmailAndPassword(auth, params.email, params.password);
         await router.push('/dashboard');
         toast('success', 'ログインしました');
       } catch (error: unknown) {
-        console.log(error);
         if (isFirebaseError(error)) {
           let errorMessage;
           switch (error.code) {

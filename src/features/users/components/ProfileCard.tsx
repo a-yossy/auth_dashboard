@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import {
   Spinner,
   Card,
@@ -9,16 +9,15 @@ import {
   Box,
   Stack,
 } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { AuthContext } from 'src/context/AuthContext';
+import { AuthContext, CURRENT_USER_STATES } from 'src/context/AuthContext';
 
 export const ProfileCard: FC = () => {
   const { currentUser } = useContext(AuthContext);
-  if (currentUser.state === 'log_out') return <div>ログインしてください</div>;
+  if (currentUser.state === CURRENT_USER_STATES.LOG_OUT) return null;
 
   return (
     <>
-      {currentUser.state === 'loading' ? (
+      {currentUser.state === CURRENT_USER_STATES.LOADING ? (
         <Spinner mt={5} mx='auto' style={{ display: 'flex' }} />
       ) : (
         <Card mt={5} mx='auto' width={350}>

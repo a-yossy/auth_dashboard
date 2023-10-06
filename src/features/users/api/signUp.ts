@@ -7,10 +7,14 @@ import { auth } from 'src/libs/firebase';
 import { isFirebaseError } from 'src/libs/isFirebaseError';
 import { AuthErrorCodes } from 'src/features/users/const';
 import { updateProfile } from 'firebase/auth';
+import { useCurrentUser } from 'src/hooks/useCurrentUser';
+import { set } from 'date-fns';
+import { CURRENT_USER_STATES } from 'src/context/AuthContext';
 
 export const useSignUp = () => {
   const toast = useToast();
   const router = useRouter();
+  const { setCurrentUser } = useCurrentUser();
   const signUp = useCallback(
     async (params: SignUpForm) => {
       try {
@@ -20,12 +24,20 @@ export const useSignUp = () => {
           params.password,
         );
         const user = response.user;
-        await router.push('/dashboard');
         // TODO: エラー処理
         await updateProfile(user, {
           displayName: params.name,
         });
+        await user.reload();
+        setCurrentUser({
+          state: CURRENT_USER_STATES.LOG_IN,
+          data: {
+            name: user.displayName ?? '',
+            email: user.email ?? '',
+          },
+        });
         toast('success', 'アカウント登録しました');
+        await router.push('/dashboard');
       } catch (error: unknown) {
         if (isFirebaseError(error)) {
           let errorMessage;
@@ -50,7 +62,7 @@ export const useSignUp = () => {
         }
       }
     },
-    [router, toast],
+    [router, setCurrentUser, toast],
   );
 
   useEffect(() => {

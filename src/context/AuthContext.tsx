@@ -1,27 +1,41 @@
-import { createContext, FC, ReactNode, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  FC,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 import { auth } from 'src/libs/firebase';
 
-type CurrentUser =
+export const CURRENT_USER_STATES = {
+  LOADING: 'loading',
+  LOG_IN: 'log_in',
+  LOG_OUT: 'log_out',
+} as const;
+
+type CurrentUserState =
   | {
-      state: 'loading';
+      state: typeof CURRENT_USER_STATES.LOADING;
     }
   | {
-      state: 'log_in';
+      state: typeof CURRENT_USER_STATES.LOG_IN;
       data: {
         name: string;
         email: string;
       };
     }
   | {
-      state: 'log_out';
+      state: typeof CURRENT_USER_STATES.LOG_OUT;
     };
 
 type AuthContextProps = {
-  currentUser: CurrentUser;
+  currentUser: CurrentUserState;
+  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUserState>>;
 };
 
 export const AuthContext = createContext<AuthContextProps>({
-  currentUser: { state: 'loading' },
+  currentUser: { state: CURRENT_USER_STATES.LOADING },
+  setCurrentUser: () => {},
 });
 
 type AuthProviderProps = {
@@ -29,33 +43,33 @@ type AuthProviderProps = {
 };
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<CurrentUser>({
-    state: 'loading',
+  const [currentUser, setCurrentUser] = useState<CurrentUserState>({
+    state: CURRENT_USER_STATES.LOADING,
   });
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setCurrentUser({
-          state: 'log_in',
+          state: CURRENT_USER_STATES.LOG_IN,
           data: {
             name: user.displayName ?? '',
             email: user.email ?? '',
           },
         });
       } else {
-        setCurrentUser({ state: 'log_out' });
+        setCurrentUser({ state: CURRENT_USER_STATES.LOG_OUT });
       }
     });
 
     return () => {
       unsubscribe();
-      setCurrentUser({ state: 'loading' });
+      setCurrentUser({ state: CURRENT_USER_STATES.LOADING });
     };
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser }}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
     </AuthContext.Provider>
   );
