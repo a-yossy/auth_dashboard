@@ -8,7 +8,6 @@ import { isFirebaseError } from 'src/libs/isFirebaseError';
 import { AuthErrorCodes } from 'src/features/users/const';
 import { updateProfile } from 'firebase/auth';
 import { useCurrentUser } from 'src/hooks/useCurrentUser';
-import { set } from 'date-fns';
 import { CURRENT_USER_STATES } from 'src/context/AuthContext';
 
 export const useSignUp = () => {
