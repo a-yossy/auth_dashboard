@@ -28,6 +28,9 @@ export const useSignUp = () => {
           displayName: params.name,
         });
         await user.reload();
+        // 下記でログインユーザー情報の登録を行っている
+        // https://github.com/a-yossy/auth_dashboard/blob/919f46358afde82dc8a88f13219481c88abde78f/src/context/AuthContext.tsx#L50-L69
+        // ユーザー名が更新される前にログインユーザー情報を登録しているため、ここで手動で登録する必要がある
         setCurrentUser({
           state: CURRENT_USER_STATES.LOG_IN,
           data: {
