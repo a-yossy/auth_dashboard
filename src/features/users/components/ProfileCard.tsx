@@ -9,7 +9,8 @@ import {
   Box,
   Stack,
 } from '@chakra-ui/react';
-import { AuthContext, CURRENT_USER_STATES } from 'src/context/AuthContext';
+import { AuthContext } from 'src/context/AuthContext';
+import { CURRENT_USER_STATES } from 'src/const';
 
 export const ProfileCard: FC = () => {
   const { currentUser } = useContext(AuthContext);

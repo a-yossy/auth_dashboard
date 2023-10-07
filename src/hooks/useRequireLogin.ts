@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useToast } from 'src/hooks/useToast';
 import { useCurrentUser } from 'src/hooks/useCurrentUser';
-import { CURRENT_USER_STATES } from 'src/context/AuthContext';
+import { CURRENT_USER_STATES } from 'src/const';
 
-export const useRequireLogin = () => {
+export const useRequireLogIn = () => {
   const router = useRouter();
   const toast = useToast();
   const { currentUser } = useCurrentUser();

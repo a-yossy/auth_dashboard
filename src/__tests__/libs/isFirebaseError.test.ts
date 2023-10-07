@@ -12,7 +12,11 @@ describe('isFirebaseError', () => {
   });
 
   it('FirebaseError ではない場合は false になること', () => {
-    const error = { code: 'invalid-code' };
+    const error = {
+      name: 'FirebaseError',
+      code: 'invalid-code',
+      message: 'Firebase: Error (auth/invalid-code).',
+    };
     expect(isFirebaseError(error)).toBe(false);
   });
 });

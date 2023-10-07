@@ -6,12 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { auth } from 'src/libs/firebase';
-
-export const CURRENT_USER_STATES = {
-  LOADING: 'loading',
-  LOG_IN: 'log_in',
-  LOG_OUT: 'log_out',
-} as const;
+import { CURRENT_USER_STATES } from 'src/const';
 
 type CurrentUserState =
   | {
