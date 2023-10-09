@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { Dashboard } from 'src/features/users/routes/Dashboard';
+import { Dashboard } from 'src/features/users';
 import { useRequireLogIn } from 'src/hooks/useRequireLogIn';
 
 const DashboardPage: NextPage = () => {

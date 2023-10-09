@@ -17,8 +17,8 @@ export const useLogIn = () => {
         await router.push('/dashboard');
         toast('success', 'ログインしました');
       } catch (error: unknown) {
+        let errorMessage = 'エラーが発生しました';
         if (isFirebaseError(error)) {
-          let errorMessage;
           switch (error.code) {
             case AuthErrorCodes.INVALID_EMAIL:
               errorMessage = 'メールアドレスが不正です';
@@ -33,12 +33,10 @@ export const useLogIn = () => {
               errorMessage =
                 'アカウントが一時的にロックされました。後でもう一度お試しください';
               break;
-            default:
-              errorMessage = 'エラーが発生しました';
           }
-
-          toast('error', 'アカウント登録に失敗しました', errorMessage);
         }
+
+        toast('error', 'ログインに失敗しました', errorMessage);
       }
     },
     [router, toast],

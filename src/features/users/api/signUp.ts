@@ -41,8 +41,8 @@ export const useSignUp = () => {
         toast('success', 'アカウント登録しました');
         await router.push('/dashboard');
       } catch (error: unknown) {
+        let errorMessage = 'エラーが発生しました';
         if (isFirebaseError(error)) {
-          let errorMessage;
           switch (error.code) {
             case AuthErrorCodes.EMAIL_EXISTS:
               errorMessage = '既に登録されているメールアドレスです';
@@ -56,12 +56,10 @@ export const useSignUp = () => {
             case AuthErrorCodes.WEAK_PASSWORD:
               errorMessage = 'パスワードが弱すぎます';
               break;
-            default:
-              errorMessage = 'エラーが発生しました';
           }
-
-          toast('error', 'アカウント登録に失敗しました', errorMessage);
         }
+
+        toast('error', 'アカウント登録に失敗しました', errorMessage);
       }
     },
     [router, setCurrentUser, toast],

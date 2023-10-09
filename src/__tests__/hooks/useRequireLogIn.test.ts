@@ -15,15 +15,15 @@ jest.mock('src/hooks/useCurrentUser', () => ({
     .mockReturnValue({ currentUser: { state: 'mockState' } }),
 }));
 
-describe('useRequireLogin', () => {
+describe('useRequireLogIn', () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  const mockRouterPush = jest.fn();
+  const mockPush = jest.fn();
   const mockToast = jest.fn();
 
-  (useRouter as jest.Mock).mockReturnValue({ push: mockRouterPush });
+  (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
   (useToast as jest.Mock).mockReturnValue(mockToast);
 
   it('ログインしていない場合は /login にリダイレクトすること', () => {
@@ -32,7 +32,7 @@ describe('useRequireLogin', () => {
     });
     renderHook(() => useRequireLogIn());
 
-    expect(mockRouterPush).toHaveBeenCalledWith('/log_in');
+    expect(mockPush).toHaveBeenCalledWith('/log_in');
     expect(mockToast).toHaveBeenCalledWith('error', 'ログインが必要です');
   });
 
@@ -42,7 +42,7 @@ describe('useRequireLogin', () => {
     });
     renderHook(() => useRequireLogIn());
 
-    expect(mockRouterPush).not.toHaveBeenCalled();
+    expect(mockPush).not.toHaveBeenCalled();
     expect(mockToast).not.toHaveBeenCalled();
   });
 });
