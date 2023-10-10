@@ -29,6 +29,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@chakra-ui/storybook-addon": "^5.0.1",
     "@storybook/addon-essentials": "^7.4.6",
     "@storybook/addon-interactions": "^7.4.6",
     "@storybook/addon-links": "^7.4.6",

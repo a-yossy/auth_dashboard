@@ -53,7 +53,7 @@ describe('useSignUp', () => {
   it('新規登録に成功した場合はダッシュボード画面に遷移すること', async () => {
     const mockReload = jest.fn();
     const mockUser = {
-      displayName: '山田太郎',
+      displayName: '山田 太郎',
       email: 'test@example.com',
       reload: mockReload,
     };
@@ -63,7 +63,7 @@ describe('useSignUp', () => {
     const { result } = renderHook(() => useSignUp());
 
     await result.current({
-      name: '山田太郎',
+      name: '山田 太郎',
       email: 'test@example.com',
       password: 'password',
       password_confirmation: 'password',
@@ -75,13 +75,13 @@ describe('useSignUp', () => {
       'password',
     );
     expect(updateProfile).toHaveBeenCalledWith(mockUser, {
-      displayName: '山田太郎',
+      displayName: '山田 太郎',
     });
     expect(mockReload).toHaveBeenCalled();
     expect(mockSetCurrentUser).toHaveBeenCalledWith({
       state: CURRENT_USER_STATES.LOG_IN,
       data: {
-        name: '山田太郎',
+        name: '山田 太郎',
         email: 'test@example.com',
       },
     });
@@ -105,7 +105,7 @@ describe('useSignUp', () => {
     const { result } = renderHook(() => useSignUp());
 
     await result.current({
-      name: '山田太郎',
+      name: '山田 太郎',
       email: 'invalid-email',
       password: 'password',
       password_confirmation: 'password',

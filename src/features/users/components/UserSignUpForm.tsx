@@ -8,6 +8,14 @@ import { useSignUp } from 'src/features/users/api/signUp';
 export const UserSignUpForm: FC = () => {
   const signUp = useSignUp();
 
+  return <UserSignUpFormPresenter signUp={signUp} />;
+};
+
+type UserSignUpFormPresenterProps = {
+  signUp: (form: SignUpForm) => Promise<void>;
+};
+
+export const UserSignUpFormPresenter: FC<UserSignUpFormPresenterProps> = ({signUp}) => {
   return (
     <Form<SignUpForm, typeof SignUpSchema>
       onSubmit={signUp}

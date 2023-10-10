@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { NoDecorationLink, NoDecorationButton } from 'src/components/elements';
-import { useLogOut } from 'src/components/layouts/Header/hooks';
+import { useLogOut } from 'src/components/layouts/Header/hooks/useLogOut';
 import { CommonHeader } from 'src/components/layouts/Header/CommonHeader';
 
 export const LoggedInHeader: FC = () => {

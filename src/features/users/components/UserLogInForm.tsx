@@ -3,11 +3,21 @@ import { OutlineButton } from 'src/components/elements';
 import { Form, InputField } from 'src/components/parts';
 import { LogInSchema } from 'src/features/users/formSchemas/logInSchema';
 import { LogInForm } from 'src/features/users/types';
-import { useLogIn } from 'src/features/users/api/logIn';
+import { useLogIn } from '../api/logIn';
 
 export const UserLogInForm: FC = () => {
-  const logIn = useLogIn();
+ const logIn = useLogIn();
 
+  return (
+    <UserLogInFormPresenter logIn={logIn} />
+  );
+}
+
+type UserLoginFormPresenterProps = {
+  logIn: (form: LogInForm) => Promise<void>;
+}
+
+export const UserLogInFormPresenter: FC<UserLoginFormPresenterProps> = ({logIn}) => {
   return (
     <Form<LogInForm, typeof LogInSchema>
       onSubmit={logIn}

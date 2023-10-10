@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { LoadingHeader } from 'src/components/layouts/Header/LoadingHeader';
 import { LoggedInHeader } from 'src/components/layouts/Header/LoggedInHeader';
 import { UnLoggedInHeader } from 'src/components/layouts/Header/UnLoggedInHeader';
