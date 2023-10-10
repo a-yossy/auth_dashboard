@@ -12,7 +12,7 @@ export const UserSignUpForm: FC = () => {
 };
 
 type UserSignUpFormPresenterProps = {
-  signUp: (form: SignUpForm) => Promise<void>;
+  signUp: (params: SignUpForm) => Promise<void>;
 };
 
 export const UserSignUpFormPresenter: FC<UserSignUpFormPresenterProps> = ({

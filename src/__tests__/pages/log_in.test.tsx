@@ -1,29 +1,45 @@
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import LogInPage from 'src/pages/log_in';
+import userEvent from '@testing-library/user-event';
+import { useLogIn } from 'src/features/users/api/logIn';
+import { LogInForm } from 'src/features/users/types';
 
-jest.mock('next/router', () => ({
-  useRouter() {
-    return {
-      prefetch: jest.fn(),
-    };
-  },
+jest.mock('src/features/users/api/logIn', () => ({
+  useLogIn: jest.fn(),
 }));
 
 jest.mock('firebase/auth', () => ({
-  signInWithEmailAndPassword: jest.fn(),
   getAuth: jest.fn(),
 }));
 
-afterEach(() => {
-  jest.resetAllMocks();
-});
-
 describe('ログインページ', () => {
-  it('ページが表示されていること', () => {
-    render(<LogInPage />);
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 
-    expect(
-      screen.getByRole('button', { name: 'ログイン' }),
-    ).toBeInTheDocument();
+  it('ログインできること', async () => {
+    const mockLogIn = jest.fn();
+    (useLogIn as jest.Mock).mockReturnValue((params: LogInForm) =>
+      mockLogIn(params),
+    );
+    render(<LogInPage />);
+    const user = userEvent.setup();
+
+    await user.type(
+      screen.getByLabelText('メールアドレス', { selector: 'input' }),
+      'test@example.com',
+    );
+    await user.type(
+      screen.getByLabelText('パスワード', { selector: 'input' }),
+      'password',
+    );
+    await user.click(screen.getByRole('button', { name: 'ログイン' }));
+
+    await waitFor(() => {
+      expect(mockLogIn).toBeCalledWith({
+        email: 'test@example.com',
+        password: 'password',
+      });
+    });
   });
 });
