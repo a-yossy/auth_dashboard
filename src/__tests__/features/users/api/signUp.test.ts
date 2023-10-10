@@ -1,6 +1,10 @@
 import { renderHook } from '@testing-library/react';
 import { useRouter } from 'next/router';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  updateProfile,
+} from 'firebase/auth';
 import { useToast } from 'src/hooks/useToast';
 import { AuthErrorCodes } from 'src/features/users/const';
 import { FirebaseError } from 'firebase/app';
@@ -20,6 +24,7 @@ jest.mock('firebase/auth', () => ({
   AuthErrorCodes: { INVALID_EMAIL: 'auth/invalid-email' },
   createUserWithEmailAndPassword: jest.fn(),
   updateProfile: jest.fn(),
+  deleteUser: jest.fn(),
 }));
 
 jest.mock('src/hooks/useToast', () => ({
@@ -60,6 +65,8 @@ describe('useSignUp', () => {
     (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({
       user: mockUser,
     });
+    (updateProfile as jest.Mock).mockResolvedValue(Promise.resolve());
+    (deleteUser as jest.Mock).mockResolvedValue(Promise.resolve());
     const { result } = renderHook(() => useSignUp());
 
     await result.current({
@@ -77,6 +84,7 @@ describe('useSignUp', () => {
     expect(updateProfile).toHaveBeenCalledWith(mockUser, {
       displayName: '山田 太郎',
     });
+    expect(deleteUser).not.toHaveBeenCalled();
     expect(mockReload).toHaveBeenCalled();
     expect(mockSetCurrentUser).toHaveBeenCalledWith({
       state: CURRENT_USER_STATES.LOG_IN,
@@ -127,6 +135,52 @@ describe('useSignUp', () => {
       'error',
       'アカウント登録に失敗しました',
       'メールアドレスが不正です',
+    );
+  });
+
+  it('ユーザー名更新に失敗した場合はユーザーが削除されること', async () => {
+    const mockReload = jest.fn();
+    const mockUser = {
+      displayName: '山田 太郎',
+      email: 'test@example.com',
+      reload: mockReload,
+    };
+    (createUserWithEmailAndPassword as jest.Mock).mockResolvedValue({
+      user: mockUser,
+    });
+    const { result } = renderHook(() => useSignUp());
+    (updateProfile as jest.Mock).mockRejectedValueOnce(
+      new FirebaseError(
+        'invalid-display-name',
+        'Firebase: Error (auth/invalid-display-name).',
+      ),
+    );
+    (deleteUser as jest.Mock).mockResolvedValue(Promise.resolve());
+
+    await result.current({
+      name: '山田 太郎',
+      email: 'test@example.com',
+      password: 'password',
+      password_confirmation: 'password',
+    });
+
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
+      expect.anything(),
+      'test@example.com',
+      'password',
+    );
+    expect(deleteUser).toHaveBeenCalledWith(mockUser);
+    expect(mockReload).not.toHaveBeenCalled();
+    expect(mockSetCurrentUser).not.toHaveBeenCalled();
+    expect(mockToast).not.toHaveBeenCalledWith(
+      'success',
+      'アカウント登録しました',
+    );
+    expect(mockPush).not.toHaveBeenCalled();
+    expect(mockToast).toHaveBeenCalledWith(
+      'error',
+      'アカウント登録に失敗しました',
+      'ユーザー名が不正です',
     );
   });
 });

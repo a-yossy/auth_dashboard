@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { NoDecorationLink } from 'src/components/elements/Link/NoDecorationLink'
+import { NoDecorationLink } from 'src/components/elements/Link/NoDecorationLink';
 
 const meta: Meta<typeof NoDecorationLink> = {
   component: NoDecorationLink,

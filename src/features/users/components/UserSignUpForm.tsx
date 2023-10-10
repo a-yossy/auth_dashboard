@@ -15,7 +15,9 @@ type UserSignUpFormPresenterProps = {
   signUp: (form: SignUpForm) => Promise<void>;
 };
 
-export const UserSignUpFormPresenter: FC<UserSignUpFormPresenterProps> = ({signUp}) => {
+export const UserSignUpFormPresenter: FC<UserSignUpFormPresenterProps> = ({
+  signUp,
+}) => {
   return (
     <Form<SignUpForm, typeof SignUpSchema>
       onSubmit={signUp}

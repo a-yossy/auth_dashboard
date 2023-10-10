@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react';
 import { CenterTitle } from 'src/components/elements';
 import { Layout } from 'src/components/layouts/Layout/Layout';
 import { AuthContext } from 'src/context/AuthContext';
-import { CURRENT_USER_STATES } from 'src/const'
+import { CURRENT_USER_STATES } from 'src/const';
 
 const meta: Meta<typeof Layout> = {
   component: Layout,
@@ -15,7 +15,12 @@ export const Default: StoryObj<typeof Layout> = {
   },
   decorators: [
     (Story) => (
-      <AuthContext.Provider value={{ currentUser: {state: CURRENT_USER_STATES.LOG_OUT} , setCurrentUser: () => {}}}>
+      <AuthContext.Provider
+        value={{
+          currentUser: { state: CURRENT_USER_STATES.LOG_OUT },
+          setCurrentUser: () => {},
+        }}
+      >
         <Story />
       </AuthContext.Provider>
     ),

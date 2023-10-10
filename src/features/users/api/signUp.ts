@@ -2,13 +2,17 @@ import { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useToast } from 'src/hooks/useToast';
 import { SignUpForm } from 'src/features/users/types';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  updateProfile,
+} from 'firebase/auth';
 import { auth } from 'src/libs/firebase';
 import { isFirebaseError } from 'src/libs/isFirebaseError';
 import { AuthErrorCodes } from 'src/features/users/const';
-import { updateProfile } from 'firebase/auth';
 import { useCurrentUser } from 'src/hooks/useCurrentUser';
 import { CURRENT_USER_STATES } from 'src/const';
+import { FirebaseUpdateProfileError } from 'src/errors';
 
 export const useSignUp = () => {
   const toast = useToast();
@@ -23,9 +27,12 @@ export const useSignUp = () => {
           params.password,
         );
         const user = response.user;
-        // TODO: エラー処理
         await updateProfile(user, {
           displayName: params.name,
+        }).catch(() => {
+          deleteUser(user);
+
+          throw new FirebaseUpdateProfileError('ユーザー名が不正です');
         });
         await user.reload();
         // 下記でログインユーザー情報の登録を行っている
@@ -57,6 +64,10 @@ export const useSignUp = () => {
               errorMessage = 'パスワードが弱すぎます';
               break;
           }
+        }
+
+        if (error instanceof FirebaseUpdateProfileError) {
+          errorMessage = error.message;
         }
 
         toast('error', 'アカウント登録に失敗しました', errorMessage);
