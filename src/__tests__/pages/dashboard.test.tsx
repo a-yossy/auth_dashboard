@@ -2,6 +2,7 @@ import { screen, render } from '@testing-library/react';
 import DashboardPage from 'src/pages/dashboard';
 import { AuthContext } from 'src/context/AuthContext';
 import { CURRENT_USER_STATES } from 'src/const';
+import '@testing-library/jest-dom';
 
 jest.mock('src/hooks/useRequireLogIn', () => ({
   useRequireLogIn: jest.fn(),
