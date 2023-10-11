@@ -3,6 +3,7 @@ import DashboardPage from 'src/pages/dashboard';
 import { AuthContext } from 'src/context/AuthContext';
 import { CURRENT_USER_STATES } from 'src/const';
 import '@testing-library/jest-dom';
+import { useRequireLogIn } from 'src/hooks/useRequireLogIn';
 
 jest.mock('src/hooks/useRequireLogIn', () => ({
   useRequireLogIn: jest.fn(),
@@ -32,6 +33,7 @@ describe('ダッシュボードページ', () => {
       </AuthContext.Provider>,
     );
 
+    expect(useRequireLogIn).toBeCalled();
     expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
     expect(screen.getByText('名前')).toBeInTheDocument();
     expect(screen.getByText('山田 太郎')).toBeInTheDocument();
@@ -51,6 +53,7 @@ describe('ダッシュボードページ', () => {
       </AuthContext.Provider>,
     );
 
+    expect(useRequireLogIn).toBeCalled();
     expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
     expect(screen.getByText('Loading...')).toBeInTheDocument();
     expect(screen.queryByText('名前')).not.toBeInTheDocument();
@@ -69,6 +72,7 @@ describe('ダッシュボードページ', () => {
       </AuthContext.Provider>,
     );
 
+    expect(useRequireLogIn).toBeCalled();
     expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
     expect(screen.queryByText('名前')).not.toBeInTheDocument();
     expect(screen.queryByText('メールアドレス')).not.toBeInTheDocument();

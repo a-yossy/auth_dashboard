@@ -3,9 +3,14 @@ import { useSignUp } from 'src/features/users/api/signUp';
 import SignUpPage from 'src/pages/sign_up';
 import userEvent from '@testing-library/user-event';
 import { SignUpForm } from 'src/features/users/types';
+import { useAlreadyLoggedIn } from 'src/hooks/useAlreadyLoggedIn';
 
 jest.mock('src/features/users/api/signUp', () => ({
   useSignUp: jest.fn(),
+}));
+
+jest.mock('src/hooks/useAlreadyLoggedIn', () => ({
+  useAlreadyLoggedIn: jest.fn(),
 }));
 
 jest.mock('firebase/auth', () => ({
@@ -18,6 +23,8 @@ describe('新規登録ページ', () => {
   });
 
   it('新規登録できること', async () => {
+    const alreadyLoggedIn = jest.fn();
+    (useAlreadyLoggedIn as jest.Mock).mockReturnValue(alreadyLoggedIn);
     const mockSignUp = jest.fn<Promise<void>, [SignUpForm]>();
     (useSignUp as jest.Mock).mockReturnValue((params: SignUpForm) =>
       mockSignUp(params),
@@ -25,6 +32,7 @@ describe('新規登録ページ', () => {
     render(<SignUpPage />);
     const user = userEvent.setup();
 
+    expect(alreadyLoggedIn).toBeCalled();
     await user.type(
       screen.getByLabelText('名前', { selector: 'input' }),
       '山田 太郎',

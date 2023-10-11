@@ -3,9 +3,14 @@ import LogInPage from 'src/pages/log_in';
 import userEvent from '@testing-library/user-event';
 import { useLogIn } from 'src/features/users/api/logIn';
 import { LogInForm } from 'src/features/users/types';
+import { useAlreadyLoggedIn } from 'src/hooks/useAlreadyLoggedIn';
 
 jest.mock('src/features/users/api/logIn', () => ({
   useLogIn: jest.fn(),
+}));
+
+jest.mock('src/hooks/useAlreadyLoggedIn', () => ({
+  useAlreadyLoggedIn: jest.fn(),
 }));
 
 jest.mock('firebase/auth', () => ({
@@ -18,6 +23,8 @@ describe('ログインページ', () => {
   });
 
   it('ログインできること', async () => {
+    const alreadyLoggedIn = jest.fn();
+    (useAlreadyLoggedIn as jest.Mock).mockReturnValue(alreadyLoggedIn);
     const mockLogIn = jest.fn<Promise<void>, [LogInForm]>();
     (useLogIn as jest.Mock).mockReturnValue((params: LogInForm) =>
       mockLogIn(params),
@@ -25,6 +32,7 @@ describe('ログインページ', () => {
     render(<LogInPage />);
     const user = userEvent.setup();
 
+    expect(alreadyLoggedIn).toBeCalled();
     await user.type(
       screen.getByLabelText('メールアドレス', { selector: 'input' }),
       'test@example.com',
