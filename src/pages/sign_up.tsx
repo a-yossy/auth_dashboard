@@ -1,12 +1,6 @@
 import type { NextPage } from 'next';
 import { UserSignUp } from 'src/features/users';
-import { useAlreadyLoggedIn } from 'src/hooks/useAlreadyLoggedIn';
 
-const SignUpPage: NextPage = () => {
-  const alreadyLoggedIn = useAlreadyLoggedIn();
-  alreadyLoggedIn();
-
-  return <UserSignUp />;
-};
+const SignUpPage: NextPage = () => <UserSignUp />;
 
 export default SignUpPage;
