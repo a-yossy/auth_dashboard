@@ -1,8 +1,6 @@
 import type { NextPage } from 'next';
 import { CenterTitle } from 'src/components/elements';
 
-const TopPage: NextPage = () => {
-  return <CenterTitle>トップページ</CenterTitle>;
-};
+const TopPage: NextPage = () => <CenterTitle>トップページ</CenterTitle>;
 
 export default TopPage;

@@ -17,33 +17,33 @@ describe('新規登録ページ', () => {
     jest.resetAllMocks();
   });
 
-  it('新規登録できること', () => {
-    const mockSignUp = jest.fn();
+  it('新規登録できること', async () => {
+    const mockSignUp = jest.fn<Promise<void>, [SignUpForm]>();
     (useSignUp as jest.Mock).mockReturnValue((params: SignUpForm) =>
       mockSignUp(params),
     );
     render(<SignUpPage />);
     const user = userEvent.setup();
 
-    user.type(
+    await user.type(
       screen.getByLabelText('名前', { selector: 'input' }),
       '山田 太郎',
     );
-    user.type(
+    await user.type(
       screen.getByLabelText('メールアドレス', { selector: 'input' }),
       'test@example.com',
     );
-    user.type(
+    await user.type(
       screen.getByLabelText('パスワード', { selector: 'input' }),
       'password',
     );
-    user.type(
+    await user.type(
       screen.getByLabelText('確認用パスワード', { selector: 'input' }),
       'password',
     );
-    user.click(screen.getByRole('button', { name: '登録' }));
+    await user.click(screen.getByRole('button', { name: '登録' }));
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(mockSignUp).toBeCalledWith({
         name: '山田 太郎',
         email: 'test@example.com',

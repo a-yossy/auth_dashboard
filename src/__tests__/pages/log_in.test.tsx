@@ -17,25 +17,25 @@ describe('ログインページ', () => {
     jest.resetAllMocks();
   });
 
-  it('ログインできること', () => {
-    const mockLogIn = jest.fn();
+  it('ログインできること', async () => {
+    const mockLogIn = jest.fn<Promise<void>, [LogInForm]>();
     (useLogIn as jest.Mock).mockReturnValue((params: LogInForm) =>
       mockLogIn(params),
     );
     render(<LogInPage />);
     const user = userEvent.setup();
 
-    user.type(
+    await user.type(
       screen.getByLabelText('メールアドレス', { selector: 'input' }),
       'test@example.com',
     );
-    user.type(
+    await user.type(
       screen.getByLabelText('パスワード', { selector: 'input' }),
       'password',
     );
-    user.click(screen.getByRole('button', { name: 'ログイン' }));
+    await user.click(screen.getByRole('button', { name: 'ログイン' }));
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(mockLogIn).toBeCalledWith({
         email: 'test@example.com',
         password: 'password',

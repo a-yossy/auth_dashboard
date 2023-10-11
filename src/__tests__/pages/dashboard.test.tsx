@@ -19,12 +19,16 @@ describe('ダッシュボードページ', () => {
   it('ログイン時にはユーザー名とメールアドレスが表示されていること', () => {
     render(
       <AuthContext.Provider
-      value={{
-        currentUser: { state: CURRENT_USER_STATES.LOG_IN, data: { name: '山田 太郎', email: 'test@example.com' } },
-        setCurrentUser: () => {},
-      }}
-    ><DashboardPage />
-    </AuthContext.Provider>
+        value={{
+          currentUser: {
+            state: CURRENT_USER_STATES.LOG_IN,
+            data: { name: '山田 太郎', email: 'test@example.com' },
+          },
+          setCurrentUser: () => {},
+        }}
+      >
+        <DashboardPage />
+      </AuthContext.Provider>,
     );
 
     expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
@@ -37,12 +41,13 @@ describe('ダッシュボードページ', () => {
   it('ローディング時には Spinner が表示されていること', () => {
     render(
       <AuthContext.Provider
-      value={{
-        currentUser: { state: CURRENT_USER_STATES.LOADING},
-        setCurrentUser: () => {},
-      }}
-    ><DashboardPage />
-    </AuthContext.Provider>
+        value={{
+          currentUser: { state: CURRENT_USER_STATES.LOADING },
+          setCurrentUser: () => {},
+        }}
+      >
+        <DashboardPage />
+      </AuthContext.Provider>,
     );
 
     expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
@@ -54,19 +59,18 @@ describe('ダッシュボードページ', () => {
   it('ログアウト時にはタイトルのみ表示されていること', () => {
     render(
       <AuthContext.Provider
-      value={{
-        currentUser: { state: CURRENT_USER_STATES.LOG_OUT},
-        setCurrentUser: () => {},
-      }}
-    ><DashboardPage />
-    </AuthContext.Provider>
+        value={{
+          currentUser: { state: CURRENT_USER_STATES.LOG_OUT },
+          setCurrentUser: () => {},
+        }}
+      >
+        <DashboardPage />
+      </AuthContext.Provider>,
     );
 
     expect(screen.getByText('ダッシュボード')).toBeInTheDocument();
     expect(screen.queryByText('名前')).not.toBeInTheDocument();
     expect(screen.queryByText('メールアドレス')).not.toBeInTheDocument();
     expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-  }
-  );
-}
-);
+  });
+});

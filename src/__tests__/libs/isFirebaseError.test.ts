@@ -1,4 +1,3 @@
-import { AuthErrorCodes } from 'firebase/auth';
 import { isFirebaseError } from 'src/libs/isFirebaseError';
 
 describe('isFirebaseError', () => {

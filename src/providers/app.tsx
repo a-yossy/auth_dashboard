@@ -7,10 +7,8 @@ type AppProviderProps = {
   children: ReactNode;
 };
 
-export const AppProvider: FC<AppProviderProps> = ({ children }) => {
-  return (
-    <AuthProvider>
-      <ChakraProvider theme={theme}>{children}</ChakraProvider>
-    </AuthProvider>
-  );
-};
+export const AppProvider: FC<AppProviderProps> = ({ children }) => (
+  <AuthProvider>
+    <ChakraProvider theme={theme}>{children}</ChakraProvider>
+  </AuthProvider>
+);

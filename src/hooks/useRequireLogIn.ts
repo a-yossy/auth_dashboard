@@ -14,7 +14,7 @@ export const useRequireLogIn = () => {
 
     if (!ignore) {
       if (currentUser.state === CURRENT_USER_STATES.LOG_OUT) {
-        router.push('/log_in');
+        void router.push('/log_in');
         toast('error', 'ログインが必要です');
       }
     }

@@ -26,11 +26,11 @@ export const useSignUp = () => {
           params.email,
           params.password,
         );
-        const user = response.user;
+        const { user } = response;
         await updateProfile(user, {
           displayName: params.name,
-        }).catch(() => {
-          deleteUser(user);
+        }).catch(async () => {
+          await deleteUser(user);
 
           throw new FirebaseUpdateProfileError('ユーザー名が不正です');
         });
@@ -62,6 +62,8 @@ export const useSignUp = () => {
               break;
             case AuthErrorCodes.WEAK_PASSWORD:
               errorMessage = 'パスワードが弱すぎます';
+              break;
+            default:
               break;
           }
         }

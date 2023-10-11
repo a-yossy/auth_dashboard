@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import NextLink from 'next/link';
 import { Link, LinkProps } from '@chakra-ui/react';
 
 export const NoDecorationLink: FC<LinkProps> = ({

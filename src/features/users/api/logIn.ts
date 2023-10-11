@@ -33,6 +33,8 @@ export const useLogIn = () => {
               errorMessage =
                 'アカウントが一時的にロックされました。後でもう一度お試しください';
               break;
+            default:
+              break;
           }
         }
 

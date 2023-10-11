@@ -3,6 +3,7 @@ import React, {
   FC,
   ReactNode,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { auth } from 'src/libs/firebase';
@@ -41,9 +42,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<CurrentUserState>({
     state: CURRENT_USER_STATES.LOADING,
   });
+  const contextValue = useMemo(
+    () => ({ currentUser, setCurrentUser }),
+    [currentUser, setCurrentUser],
+  );
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentUser({
           state: CURRENT_USER_STATES.LOG_IN,
@@ -64,8 +69,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
