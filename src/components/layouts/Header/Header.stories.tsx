@@ -1,14 +1,21 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Header } from 'src/components/layouts/Header/Header';
+import { HeaderPresenter } from 'src/components/layouts/Header/Header';
 import { CURRENT_USER_STATES } from 'src/const';
 import { AuthContext } from 'src/context/AuthContext';
 
-const meta: Meta<typeof Header> = {
-  component: Header,
+const meta: Meta<typeof HeaderPresenter> = {
+  component: HeaderPresenter,
 };
 export default meta;
 
-export const Loading: StoryObj<typeof Header> = {
+export const Loading: StoryObj<typeof HeaderPresenter> = {
+  args: {
+    logOut: async () => {
+      console.log('log out');
+
+      return Promise.resolve();
+    },
+  },
   decorators: [
     (Story) => (
       <AuthContext.Provider
@@ -23,7 +30,14 @@ export const Loading: StoryObj<typeof Header> = {
   ],
 };
 
-export const LogIn: StoryObj<typeof Header> = {
+export const LogIn: StoryObj<typeof HeaderPresenter> = {
+  args: {
+    logOut: async () => {
+      console.log('log out');
+
+      return Promise.resolve();
+    },
+  },
   decorators: [
     (Story) => (
       <AuthContext.Provider
@@ -41,7 +55,14 @@ export const LogIn: StoryObj<typeof Header> = {
   ],
 };
 
-export const LogOut: StoryObj<typeof Header> = {
+export const LogOut: StoryObj<typeof HeaderPresenter> = {
+  args: {
+    logOut: async () => {
+      console.log('log out');
+
+      return Promise.resolve();
+    },
+  },
   decorators: [
     (Story) => (
       <AuthContext.Provider
