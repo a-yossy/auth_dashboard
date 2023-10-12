@@ -8,9 +8,13 @@ export const useLogOut = () => {
   const toast = useToast();
   const router = useRouter();
   const logOut = useCallback(async () => {
-    await router.push('/');
-    await signOut(auth);
-    toast('success', 'ログアウトしました');
+    try {
+      await router.push('/');
+      await signOut(auth);
+      toast('success', 'ログアウトしました');
+    } catch {
+      toast('error', 'ログアウトに失敗しました');
+    }
   }, [router, toast]);
 
   return logOut;

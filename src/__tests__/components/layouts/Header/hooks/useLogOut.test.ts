@@ -28,10 +28,12 @@ describe('useLogOut', () => {
   const mockPush = jest.fn();
   const mockToast = jest.fn();
 
-  (useRouter as jest.Mock).mockReturnValue({
-    push: mockPush,
+  beforeEach(() => {
+    (useRouter as jest.Mock).mockReturnValue({
+      push: mockPush,
+    });
+    (useToast as jest.Mock).mockReturnValue(mockToast);
   });
-  (useToast as jest.Mock).mockReturnValue(mockToast);
 
   it('ログアウトに成功した場合はホーム画面に遷移すること', async () => {
     const { result } = renderHook(() => useLogOut());
@@ -41,5 +43,16 @@ describe('useLogOut', () => {
     expect(mockPush).toHaveBeenCalledWith('/');
     expect(signOut).toHaveBeenCalled();
     expect(mockToast).toHaveBeenCalledWith('success', 'ログアウトしました');
+  });
+
+  it('ログアウトに失敗した場合はエラーメッセージが表示されること', async () => {
+    (signOut as jest.Mock).mockRejectedValueOnce(new Error('error'));
+    const { result } = renderHook(() => useLogOut());
+
+    await result.current();
+
+    expect(mockPush).toHaveBeenCalledWith('/');
+    expect(mockToast).not.toHaveBeenCalledWith('success', 'ログアウトしました');
+    expect(mockToast).toHaveBeenCalledWith('error', 'ログアウトに失敗しました');
   });
 });
