@@ -8,21 +8,7 @@ import React, {
 } from 'react';
 import { auth } from 'src/libs/firebase';
 import { CURRENT_USER_STATES } from 'src/const';
-
-type CurrentUserState =
-  | {
-      state: typeof CURRENT_USER_STATES.LOADING;
-    }
-  | {
-      state: typeof CURRENT_USER_STATES.LOG_IN;
-      data: {
-        name: string;
-        email: string;
-      };
-    }
-  | {
-      state: typeof CURRENT_USER_STATES.LOG_OUT;
-    };
+import { CurrentUserState } from 'src/types/currentUserState';
 
 type AuthContextProps = {
   currentUser: CurrentUserState;
