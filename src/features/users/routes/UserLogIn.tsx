@@ -7,7 +7,15 @@ export const UserLogIn: FC = () => {
   const alreadyLoggedIn = useAlreadyLoggedIn();
 
   useEffect(() => {
-    alreadyLoggedIn();
+    let ignore = false;
+
+    if (!ignore) {
+      alreadyLoggedIn();
+    }
+
+    return () => {
+      ignore = true;
+    };
   }, [alreadyLoggedIn]);
 
   return (
