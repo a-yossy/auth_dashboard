@@ -11,6 +11,7 @@ export default meta;
 export const Loading: StoryObj<typeof HeaderPresenter> = {
   args: {
     logOut: async () => {
+      // eslint-disable-next-line no-console
       console.log('log out');
 
       return Promise.resolve();
@@ -33,6 +34,7 @@ export const Loading: StoryObj<typeof HeaderPresenter> = {
 export const LogIn: StoryObj<typeof HeaderPresenter> = {
   args: {
     logOut: async () => {
+      // eslint-disable-next-line no-console
       console.log('log out');
 
       return Promise.resolve();
@@ -58,6 +60,7 @@ export const LogIn: StoryObj<typeof HeaderPresenter> = {
 export const LogOut: StoryObj<typeof HeaderPresenter> = {
   args: {
     logOut: async () => {
+      // eslint-disable-next-line no-console
       console.log('log out');
 
       return Promise.resolve();

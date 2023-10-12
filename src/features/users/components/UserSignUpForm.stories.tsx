@@ -9,6 +9,7 @@ export default meta;
 export const Default: StoryObj<typeof UserSignUpFormPresenter> = {
   args: {
     signUp: async ({ name, email, password, password_confirmation }) => {
+      // eslint-disable-next-line no-console
       console.log({ name, email, password, password_confirmation });
 
       return Promise.resolve();
