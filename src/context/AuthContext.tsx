@@ -1,13 +1,6 @@
-import React, {
-  createContext,
-  FC,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { auth } from 'src/libs/firebase';
+import React, { createContext, FC, ReactNode, useMemo, useState } from 'react';
 import { CURRENT_USER_STATES } from 'src/const';
+import { useAuthStateListener } from 'src/hooks/useAuthStateListener';
 import { CurrentUserState } from 'src/types/currentUserState';
 
 type AuthContextProps = {
@@ -32,27 +25,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     () => ({ currentUser, setCurrentUser }),
     [currentUser, setCurrentUser],
   );
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setCurrentUser({
-          state: CURRENT_USER_STATES.LOG_IN,
-          data: {
-            name: user.displayName ?? '',
-            email: user.email ?? '',
-          },
-        });
-      } else {
-        setCurrentUser({ state: CURRENT_USER_STATES.LOG_OUT });
-      }
-    });
-
-    return () => {
-      unsubscribe();
-      setCurrentUser({ state: CURRENT_USER_STATES.LOADING });
-    };
-  }, []);
+  useAuthStateListener(setCurrentUser);
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
